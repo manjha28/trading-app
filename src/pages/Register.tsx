@@ -1,49 +1,58 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { login, startGoogleLogin } from "../api/auth";
+import { signup, startGoogleLogin } from "../api/auth";
 import "./auth.css";
 
-const Login: React.FC = () => {
+const Register: React.FC = () => {
   const navigate = useNavigate();
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-   async function handleSubmit(e: React.FormEvent) {
+  async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setError(null);
     setLoading(true);
 
     try {
-      const data = await login(email, password);
-      // 🔐 store token + user
-      localStorage.setItem("token", data.access_token);
-      localStorage.setItem("user", JSON.stringify(data.user));
-
-      // later we’ll go to real dashboard
-      navigate("/dashboard");
+      const data = await signup(name, email, password);
+      console.log("Signed up:", data);
+      navigate("/login");
     } catch (err: any) {
       console.error(err);
       setError(
         err?.response?.data?.detail ||
-          "Login failed. Check your credentials."
+          "Signup failed. Try a different email."
       );
     } finally {
       setLoading(false);
     }
   }
 
-
   return (
     <div className="auth-page">
       <div className="auth-card narrow">
-        <h2>Log in</h2>
-        <p className="subheading">Welcome back, let&apos;s review those trades.</p>
+        <h2>Create your account</h2>
+        <p className="subheading">
+          Start tracking your trading performance in one place.
+        </p>
 
         {error && <div className="error-banner">{error}</div>}
 
         <form onSubmit={handleSubmit} className="auth-form">
+          <label>
+            Name
+            <input
+              type="text"
+              autoComplete="name"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              required
+            />
+          </label>
+
           <label>
             Email
             <input
@@ -59,7 +68,7 @@ const Login: React.FC = () => {
             Password
             <input
               type="password"
-              autoComplete="current-password"
+              autoComplete="new-password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
@@ -67,7 +76,7 @@ const Login: React.FC = () => {
           </label>
 
           <button type="submit" className="btn primary full" disabled={loading}>
-            {loading ? "Logging in..." : "Log in"}
+            {loading ? "Creating account..." : "Sign up"}
           </button>
         </form>
 
@@ -85,11 +94,11 @@ const Login: React.FC = () => {
         </button>
 
         <p className="small-note center">
-          New here? <Link to="/signup">Create an account</Link>
+          Already have an account? <Link to="/login">Log in</Link>
         </p>
       </div>
     </div>
   );
 };
 
-export default Login;
+export default Register;
