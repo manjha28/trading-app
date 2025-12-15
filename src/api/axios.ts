@@ -1,10 +1,10 @@
-import axios from 'axios';
+import axios from "axios";
 
-const instance = axios.create({
-  baseURL: 'http://localhost:8000', // Update if using a different port or deployed backend
+const api = axios.create({
+  baseURL: "https://moonlit-spooky-goblin-65wjr75r57w35xvr-8000.app.github.dev/api",
   headers: {
-    'Content-Type': 'application/json',
+    "Content-Type": "application/json",
   },
 });
 
-export default instance;
+export default api;
