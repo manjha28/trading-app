@@ -17,7 +17,6 @@ const Dashboard: React.FC = () => {
     const userStr = localStorage.getItem("user");
 
     if (!token || !userStr) {
-      // no auth → kick to login
       navigate("/login");
       return;
     }
