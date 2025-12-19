@@ -7,6 +7,7 @@
   --text-main: #e5e7eb;
   --text-muted: #9ca3af;
   --danger: #ef4444;
+  --success: #22c55e;
 }
 
 body {
@@ -25,6 +26,8 @@ a {
 a:hover {
   text-decoration: underline;
 }
+
+/* ---------------- LAYOUT ---------------- */
 
 .auth-page {
   min-height: 100vh;
@@ -46,21 +49,19 @@ a:hover {
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
 }
 
+/* narrow cards (login/signup) */
 .auth-card.narrow {
   max-width: 420px;
   flex-direction: column;
 }
 
-.auth-left {
-  flex: 1.2;
+/* wide cards (dashboard) */
+.auth-card.wide {
+  max-width: 1100px;
+  flex-direction: column;
 }
 
-.auth-right {
-  flex: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
+/* ---------------- TEXT ---------------- */
 
 .brand {
   font-size: 32px;
@@ -73,12 +74,23 @@ a:hover {
   max-width: 430px;
 }
 
-.cta-buttons {
-  display: flex;
-  gap: 12px;
-  margin-bottom: 16px;
-  flex-wrap: wrap;
+.subheading {
+  color: var(--text-muted);
+  font-size: 13px;
+  margin-top: 4px;
+  margin-bottom: 10px;
 }
+
+.small-note {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.small-note.center {
+  text-align: center;
+}
+
+/* ---------------- BUTTONS ---------------- */
 
 .btn {
   border-radius: 999px;
@@ -117,92 +129,36 @@ a:hover {
   background: rgba(15, 23, 42, 0.9);
 }
 
+.btn.full {
+  width: 100%;
+}
+
 .btn.google {
   background: white;
   color: #111827;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  max-width: 100%;
+  overflow: hidden;
 }
+.btn.google svg,
+.btn.google img {
+  width: 18px;
+  height: 18px;
+  max-width: 18px;
+  max-height: 18px;
+  display: block;
+}
+
 
 .btn.google:hover {
   background: #e5e7eb;
 }
 
-.btn.full {
-  width: 100%;
-}
 
-.google-icon {
-  width: 18px;
-  height: 18px;
-}
-
-.divider {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  color: var(--text-muted);
-  font-size: 12px;
-  margin: 14px 0;
-}
-
-.divider::before,
-.divider::after {
-  content: "";
-  height: 1px;
-  flex: 1;
-  background: var(--border);
-}
-
-.small-note {
-  font-size: 12px;
-  color: var(--text-muted);
-  margin-top: 6px;
-}
-
-.small-note.center {
-  text-align: center;
-}
-
-.fake-dashboard-card {
-  background: radial-gradient(circle at top left, #1f2937 0, #020617 65%);
-  border-radius: 18px;
-  border: 1px solid var(--border);
-  padding: 18px;
-  width: 100%;
-  max-width: 320px;
-}
-
-.fake-dashboard-card h3 {
-  margin: 0 0 6px;
-  font-size: 16px;
-}
-
-.pnl-positive {
-  font-size: 24px;
-  margin: 0 0 10px;
-  color: #22c55e;
-}
-
-.mini-stats {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 8px;
-}
-
-.mini-stats span {
-  display: block;
-  font-size: 11px;
-  color: var(--text-muted);
-}
-
-.mini-stats strong {
-  font-size: 14px;
-}
-
-.tiny-text {
-  font-size: 11px;
-  color: var(--text-muted);
-}
+/* ---------------- FORMS ---------------- */
 
 .auth-form {
   display: flex;
@@ -243,21 +199,56 @@ a:hover {
   margin-bottom: 8px;
 }
 
-.subheading {
-  color: var(--text-muted);
-  font-size: 13px;
-  margin-top: 4px;
-  margin-bottom: 10px;
+/* ---------------- DASHBOARD ---------------- */
+
+.kpi {
+  background: rgba(15, 23, 42, 0.9);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 12px 16px;
+  min-width: 140px;
 }
 
-/* Responsive */
+.kpi-label {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.kpi-value {
+  font-size: 20px;
+  font-weight: bold;
+  margin-top: 4px;
+}
+
+/* ---------------- TABLE ---------------- */
+
+.trades-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 8px;
+}
+
+.trades-table th,
+.trades-table td {
+  padding: 8px 10px;
+  border-bottom: 1px solid var(--border);
+  font-size: 13px;
+}
+
+.trades-table th {
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+.trades-table td {
+  color: var(--text-main);
+}
+
+/* ---------------- RESPONSIVE ---------------- */
+
 @media (max-width: 768px) {
   .auth-card {
     flex-direction: column;
-  }
-
-  .auth-right {
-    display: none;
   }
 
   .auth-page {

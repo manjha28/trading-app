@@ -1,7 +1,14 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { login, startGoogleLogin } from "../api/auth";
+import { login } from "../api/auth";
 import "./auth.css";
+
+function getErrorMessage(err: any): string {
+  if (typeof err?.response?.data?.detail === "string") {
+    return err.response.data.detail;
+  }
+  return "Login failed";
+}
 
 const Login: React.FC = () => {
   const navigate = useNavigate();
@@ -10,30 +17,25 @@ const Login: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-   async function handleSubmit(e: React.FormEvent) {
+  async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setError(null);
     setLoading(true);
 
     try {
       const data = await login(email, password);
-      // 🔐 store token + user
+
       localStorage.setItem("token", data.access_token);
       localStorage.setItem("user", JSON.stringify(data.user));
 
-      // later we’ll go to real dashboard
       navigate("/dashboard");
     } catch (err: any) {
       console.error(err);
-      setError(
-        err?.response?.data?.detail ||
-          "Login failed. Check your credentials."
-      );
+      setError(getErrorMessage(err));
     } finally {
       setLoading(false);
     }
   }
-
 
   return (
     <div className="auth-page">
@@ -48,7 +50,6 @@ const Login: React.FC = () => {
             Email
             <input
               type="email"
-              autoComplete="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
@@ -59,7 +60,6 @@ const Login: React.FC = () => {
             Password
             <input
               type="password"
-              autoComplete="current-password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
@@ -70,19 +70,6 @@ const Login: React.FC = () => {
             {loading ? "Logging in..." : "Log in"}
           </button>
         </form>
-
-        <div className="divider">
-          <span>or</span>
-        </div>
-
-        <button className="btn google full" onClick={startGoogleLogin}>
-          <img
-            src="https://www.svgrepo.com/show/475656/google-color.svg"
-            alt="Google"
-            className="google-icon"
-          />
-          Continue with Google
-        </button>
 
         <p className="small-note center">
           New here? <Link to="/signup">Create an account</Link>
