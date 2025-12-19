@@ -1,0 +1,26 @@
+from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
+
+from database import Base, engine
+from routes import auth,trades,analytics
+
+Base.metadata.create_all(bind=engine)
+
+app = FastAPI()
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+app.include_router(auth.router)
+
+app.include_router(trades.router)
+
+app.include_router(analytics.router)
+
+@app.get("/")
+def root():
+    return {"status": "Backend is running"}
